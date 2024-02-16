@@ -22,14 +22,14 @@ public class UsuarioDTO {
 	private LocalDate dataCadastro;
 
 	public static UsuarioDTO convert(Usuario usuario) {
-		UsuarioDTO userDTO = new UsuarioDTO();
-		userDTO.setNome(usuario.getNome());
-		userDTO.setEndereco(usuario.getEndereco());
-		userDTO.setCpf(usuario.getCpf());
-		userDTO.setEmail(usuario.getEmail());
-		userDTO.setTelefone(usuario.getTelefone());
-		userDTO.setDataCadastro(usuario.getDataCadastro());
-		return userDTO;
+		UsuarioDTO usuarioDTO = new UsuarioDTO();
+		usuarioDTO.setNome(usuario.getNome());
+		usuarioDTO.setEndereco(usuario.getEndereco());
+		usuarioDTO.setCpf(usuario.getCpf());
+		usuarioDTO.setEmail(usuario.getEmail());
+		usuarioDTO.setTelefone(usuario.getTelefone());
+		usuarioDTO.setDataCadastro(usuario.getDataCadastro());
+		return usuarioDTO;
 	}
 
 }
