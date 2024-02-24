@@ -29,14 +29,14 @@ public class Usuario {
 	private String telefone;
 	private LocalDate dataCadastro;
 
-	public static Usuario convert(UsuarioDTO userDTO) {
+	public static Usuario convert(UsuarioDTO usuarioDTO) {
 		Usuario usuario = new Usuario();
-		usuario.setNome(userDTO.getNome());
-		usuario.setEndereco(userDTO.getEndereco());
-		usuario.setCpf(userDTO.getCpf());
-		usuario.setEmail(userDTO.getEmail());
-		usuario.setTelefone(userDTO.getTelefone());
-		usuario.setDataCadastro(userDTO.getDataCadastro());
+		usuario.setNome(usuarioDTO.getNome());
+		usuario.setEndereco(usuarioDTO.getEndereco());
+		usuario.setCpf(usuarioDTO.getCpf());
+		usuario.setEmail(usuarioDTO.getEmail());
+		usuario.setTelefone(usuarioDTO.getTelefone());
+		usuario.setDataCadastro(LocalDate.now());
 		return usuario;
 	}
 }
