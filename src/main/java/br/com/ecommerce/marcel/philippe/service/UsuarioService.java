@@ -40,6 +40,7 @@ public class UsuarioService {
 		Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
 		if (usuario.isPresent()) {
 			usuarioRepository.delete(usuario.get());
+			return UsuarioDTO.convert(usuario.get());
 		}
 		return null;
 	}

@@ -9,7 +9,7 @@ import br.com.ecommerce.marcel.philippe.modelo.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	Usuario findByCpf(String cpf);
-
-	List<Usuario> queryByNomeLike(String name);
+	
+	List<Usuario> queryByNomeLike(String nome);
 
 }
