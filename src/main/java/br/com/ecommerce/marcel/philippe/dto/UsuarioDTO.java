@@ -1,8 +1,7 @@
 package br.com.ecommerce.marcel.philippe.dto;
 
-import java.time.LocalDate;
-
 import br.com.ecommerce.marcel.philippe.modelo.Usuario;
+import br.com.ecommerce.marcel.philippe.utils.DataUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +18,7 @@ public class UsuarioDTO {
 	private String endereco;
 	private String email;
 	private String telefone;
-	private LocalDate dataCadastro;
+	private String dataCadastro;
 
 	public static UsuarioDTO convert(Usuario usuario) {
 		UsuarioDTO usuarioDTO = new UsuarioDTO();
@@ -28,7 +27,7 @@ public class UsuarioDTO {
 		usuarioDTO.setCpf(usuario.getCpf());
 		usuarioDTO.setEmail(usuario.getEmail());
 		usuarioDTO.setTelefone(usuario.getTelefone());
-		usuarioDTO.setDataCadastro(usuario.getDataCadastro());
+		usuarioDTO.setDataCadastro(DataUtil.transformarLocalDateEmString(usuario.getDataCadastro()));
 		return usuarioDTO;
 	}
 

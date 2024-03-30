@@ -3,6 +3,7 @@ package br.com.ecommerce.marcel.philippe.modelo;
 import java.time.LocalDate;
 
 import br.com.ecommerce.marcel.philippe.dto.UsuarioDTO;
+import br.com.ecommerce.marcel.philippe.utils.DataUtil;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,7 +37,7 @@ public class Usuario {
 		usuario.setCpf(usuarioDTO.getCpf());
 		usuario.setEmail(usuarioDTO.getEmail());
 		usuario.setTelefone(usuarioDTO.getTelefone());
-		usuario.setDataCadastro(LocalDate.now());
+		usuario.setDataCadastro(DataUtil.transformarStringEmLocalDate(usuarioDTO.getDataCadastro()));
 		return usuario;
 	}
 }
