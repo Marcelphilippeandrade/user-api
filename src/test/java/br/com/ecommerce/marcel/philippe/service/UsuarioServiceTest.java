@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
@@ -33,35 +35,44 @@ public class UsuarioServiceTest {
 	@Autowired
 	private UsuarioService usuarioService;
 	
+	private static final LocalDate DATA_CADASTRO = LocalDate.now();
+	private static final String USUARIO_CPF = "066.189.386-35";
+	private static final String USUARIO_NOME = "Marcel";
+	private static final Long USUARIO_ID = 1L;
+	
+	private static final String TELEFONE = "31998565849";
+	private static final String ENDERECO = "Rua Manoel Rubim";
+	private static final String USUARIO_EMAIL = "marcelpaa@hotmail.com";
+	
+	@BeforeEach
 	public void setUp() {
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		Usuario usuario = new Usuario();
-		usuario.setId(1);
-		usuario.setNome("Marcel");
-		usuario.setCpf("066.189.386-35");
-		usuario.setDataCadastro(LocalDate.now());
+		usuario.setId(USUARIO_ID);
+		usuario.setNome(USUARIO_NOME);
+		usuario.setCpf(USUARIO_CPF);
+		usuario.setDataCadastro(DATA_CADASTRO);
 		usuarios.add(usuario);
 		
 		Usuario usuario1 = new Usuario();
-		usuario1.setId(2);
-		usuario1.setNome("Marcel Philippe");
-		usuario1.setCpf("390.857.676-87");
-		usuario1.setDataCadastro(LocalDate.now());
+		usuario1.setId(USUARIO_ID);
+		usuario1.setNome(USUARIO_NOME);
+		usuario1.setCpf(USUARIO_CPF);
+		usuario1.setDataCadastro(DATA_CADASTRO);
 		
 		usuarios.add(usuario1);
 		
 		BDDMockito.given(this.usuarioRepository.save(any())).willReturn(usuario);
 		BDDMockito.given(this.usuarioRepository.saveAll(Mockito.anyList())).willReturn(usuarios);
-		BDDMockito.given(this.usuarioRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(usuario));
-		BDDMockito.given(this.usuarioRepository.findByCpf(Mockito.anyString())).willReturn(usuario);
+		BDDMockito.given(this.usuarioRepository.findById(USUARIO_ID)).willReturn(Optional.ofNullable(usuario));
+		BDDMockito.given(this.usuarioRepository.findByCpf(USUARIO_CPF)).willReturn(usuario);
 		
 		BDDMockito.given(this.usuarioRepository.findAll()).willReturn(usuarios);
-		BDDMockito.given(this.usuarioRepository.queryByNomeLike(Mockito.anyString())).willReturn(usuarios);
+		BDDMockito.given(this.usuarioRepository.queryByNomeLike(USUARIO_NOME)).willReturn(usuarios);
 	}
 	
 	@Test
 	public void deveRetornarTodosOsUsuarios() {
-		setUp();
 		List<UsuarioDTO> usuarios = this.usuarioService.getAll();
 		assertNotNull(usuarios);
 		assertTrue("A lista de usuarios deve ter mais de 1 usuario!", usuarios.size() > 1);
@@ -69,7 +80,6 @@ public class UsuarioServiceTest {
 	
 	@Test
 	public void deveRetornarUmUsuarioPeloId() {
-		setUp();
 		UsuarioDTO usuario = usuarioService.findById(1);
 		assertNotNull(usuario);
 	}
@@ -83,23 +93,21 @@ public class UsuarioServiceTest {
 	@Test
 	public void deveSalvarUmUsuario() {
 		UsuarioDTO usuarioDTO = new UsuarioDTO();
-		usuarioDTO.setNome("Marcel");
-		usuarioDTO.setCpf("066.189.386-35");
-		usuarioDTO.setEmail("marcelpaa@hotmail.com");
-		usuarioDTO.setEndereco("Rua Manoel Rubim");
-		usuarioDTO.setTelefone("31998565849");
+		usuarioDTO.setNome(USUARIO_NOME);
+		usuarioDTO.setCpf(USUARIO_CPF);
+		usuarioDTO.setEmail(USUARIO_EMAIL);
+		usuarioDTO.setEndereco(ENDERECO);
+		usuarioDTO.setTelefone(TELEFONE);
 		usuarioDTO.setDataCadastro("30-03-2024");
 		
-		setUp();
 		UsuarioDTO usuarioSalvo = usuarioService.save(usuarioDTO);
 		assertNotNull(usuarioSalvo);
 	}
 	
 	@Test
 	public void deveDeletarUmUsuarioPeloId() {
-		setUp();
 		UsuarioDTO usuarioDeletado = usuarioService.delete(1);
-		assertEquals("066.189.386-35", usuarioDeletado.getCpf());
+		assertEquals(USUARIO_CPF, usuarioDeletado.getCpf());
 	}
 	
 	@Test
@@ -110,10 +118,9 @@ public class UsuarioServiceTest {
 	
 	@Test
 	public void deveRetornarUmUsuarioPeloCpf() {
-		setUp();
-		UsuarioDTO usuario = usuarioService.findByCpf("066.189.386-35");
+		UsuarioDTO usuario = usuarioService.findByCpf(USUARIO_CPF);
 		assertNotNull(usuario);
-		assertEquals("066.189.386-35", usuario.getCpf());
+		assertEquals(USUARIO_CPF, usuario.getCpf());
 	}
 	
 	@Test
@@ -124,9 +131,8 @@ public class UsuarioServiceTest {
 	
 	@Test
 	public void deveRetornarUmUsuariosComMesmoNome() {
-		setUp();
-		List<UsuarioDTO> usuarios = usuarioService.queryByName("Mar");
+		List<UsuarioDTO> usuarios = usuarioService.queryByName("Marcel");
 		assertNotNull(usuarios);
-		assertTrue("A lista de usuarios deve ter mais de 1 usuario!", usuarios.size() > 1);
+		assertEquals(2, usuarios.size());
 	}
 }
