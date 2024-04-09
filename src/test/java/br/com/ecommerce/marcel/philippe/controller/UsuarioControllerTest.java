@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.BDDMockito;
@@ -39,22 +40,27 @@ class UsuarioControllerTest {
 
 	@MockBean
 	private UsuarioService usuarioService;
+	
+	private List<UsuarioDTO> usuarios;
+	private UsuarioDTO usuarioDto;
 
 	private static final String URL_BASE = "/user";
 	private static final String CPF = "066.189.386-35";
 	private static final String EMAIL = "marcelpaa@hotmail.com";
 	private static final String NOME = "Marcel Philippe";
-	private static final Long ID = 1L;
+	private static final Long USUARIO_ID = 1L;
 	private static final String DATA_CADASTRO = "29-03-2024";
+	
+	@BeforeEach
+	public void setUp() {
+		usuarios = new ArrayList<>();
+		usuarioDto = ObterDadosDoUsuario();
+		
+		usuarios.add(usuarioDto);
+	}
 
 	@Test
 	public void deveRetornarTodosOsUsuarios() throws Exception {
-
-		List<UsuarioDTO> usuarios = new ArrayList<>();
-		UsuarioDTO usuarioDto = ObterDadosDoUsuario();
-		
-		usuarios.add(usuarioDto);
-
 		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(usuarioDto);
 		BDDMockito.given(this.usuarioService.getAll()).willReturn(usuarios);
 
@@ -68,18 +74,16 @@ class UsuarioControllerTest {
 
 	@Test
 	public void deveRetornarUmUsuarioPeloId() throws Exception {
-		UsuarioDTO usuarioDto = ObterDadosDoUsuario();
-		
 		Usuario usuario = Usuario.convert(usuarioDto);
-		usuario.setId(ID);
+		usuario.setId(USUARIO_ID);
 		
 		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(UsuarioDTO.convert(usuario));
-		BDDMockito.given(this.usuarioService.findById(ID)).willReturn(UsuarioDTO.convert(usuario));
+		BDDMockito.given(this.usuarioService.findById(USUARIO_ID)).willReturn(UsuarioDTO.convert(usuario));
 		
-		mvc.perform(MockMvcRequestBuilders.get(URL_BASE + "/" + ID)
+		mvc.perform(MockMvcRequestBuilders.get(URL_BASE + "/" + USUARIO_ID)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(content().string(containsString(String.valueOf(ID))))
+				.andExpect(content().string(containsString(String.valueOf(USUARIO_ID))))
 				.andExpect(content().string(containsString(CPF)))
 				.andExpect(content().string(containsString(EMAIL)))
 				.andExpect(content().string(containsString(NOME)));
@@ -87,10 +91,8 @@ class UsuarioControllerTest {
 	
 	@Test
 	public void deveSalvarUmUsuario() throws Exception {
-		UsuarioDTO usuarioDto = ObterDadosDoUsuario();
-		
 		Usuario usuario = Usuario.convert(usuarioDto);
-		usuario.setId(ID);
+		usuario.setId(USUARIO_ID);
 		
 		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(UsuarioDTO.convert(usuario));
 		
@@ -99,7 +101,7 @@ class UsuarioControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(content().string(containsString(String.valueOf(ID))))
+				.andExpect(content().string(containsString(String.valueOf(USUARIO_ID))))
 				.andExpect(content().string(containsString(CPF)))
 				.andExpect(content().string(containsString(EMAIL)))
 				.andExpect(content().string(containsString(NOME)));
@@ -107,15 +109,13 @@ class UsuarioControllerTest {
 	
 	@Test
 	public void deveRetornarUmUsuarioPeloCpf() throws Exception {
-		UsuarioDTO usuarioDto = ObterDadosDoUsuario();
-		
 		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(usuarioDto);
 		BDDMockito.given(this.usuarioService.findByCpf(CPF)).willReturn(usuarioDto);
 		
 		mvc.perform(MockMvcRequestBuilders.get(URL_BASE + "/cpf/" + CPF)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(content().string(containsString(String.valueOf(ID))))
+				.andExpect(content().string(containsString(String.valueOf(USUARIO_ID))))
 				.andExpect(content().string(containsString(CPF)))
 				.andExpect(content().string(containsString(EMAIL)))
 				.andExpect(content().string(containsString(NOME)));
@@ -123,23 +123,16 @@ class UsuarioControllerTest {
 	
 	@Test
 	public void deveDeletarUmUsuarioPeloId() throws Exception {
-		UsuarioDTO usuarioDto = ObterDadosDoUsuario();
-		
 		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(usuarioDto);
 		BDDMockito.given(this.usuarioService.delete(Mockito.anyLong())).willReturn(usuarioDto);
 		
-		mvc.perform(MockMvcRequestBuilders.delete(URL_BASE + "/" + ID)
+		mvc.perform(MockMvcRequestBuilders.delete(URL_BASE + "/" + USUARIO_ID)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 	
 	@Test
 	public void deveRetornarUsuariosComOMesmoNome() throws Exception {
-		List<UsuarioDTO> usuarios = new ArrayList<>();
-		UsuarioDTO usuarioDto = ObterDadosDoUsuario();
-		
-		usuarios.add(usuarioDto);
-		
 		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(usuarioDto);
 		BDDMockito.given(this.usuarioService.queryByName("Mar")).willReturn(usuarios);
 		
@@ -154,7 +147,7 @@ class UsuarioControllerTest {
 	private String obterJsonRequisicaoPost() throws JsonProcessingException {
 		UsuarioDTO usuarioDto = ObterDadosDoUsuario();
 		Usuario usuario = Usuario.convert(usuarioDto);
-		usuario.setId(ID);
+		usuario.setId(USUARIO_ID);
 		
 		UsuarioDTO usuarioDtoConvertido = UsuarioDTO.convert(usuario);
 		
