@@ -54,7 +54,7 @@ class UsuarioControllerTest {
 	@BeforeEach
 	public void setUp() {
 		usuarios = new ArrayList<>();
-		usuarioDto = ObterDadosDoUsuario();
+		usuarioDto = obterDadosDoUsuario();
 		
 		usuarios.add(usuarioDto);
 	}
@@ -145,7 +145,7 @@ class UsuarioControllerTest {
 	}
 	
 	private String obterJsonRequisicaoPost() throws JsonProcessingException {
-		UsuarioDTO usuarioDto = ObterDadosDoUsuario();
+		UsuarioDTO usuarioDto = obterDadosDoUsuario();
 		Usuario usuario = Usuario.convert(usuarioDto);
 		usuario.setId(USUARIO_ID);
 		
@@ -155,7 +155,7 @@ class UsuarioControllerTest {
 		return mapper.writeValueAsString(usuarioDtoConvertido);
 	}
 
-	private UsuarioDTO ObterDadosDoUsuario() {
+	private UsuarioDTO obterDadosDoUsuario() {
 		UsuarioDTO usuario = new UsuarioDTO();
 		usuario.setCpf(CPF);
 		usuario.setEmail(EMAIL);
