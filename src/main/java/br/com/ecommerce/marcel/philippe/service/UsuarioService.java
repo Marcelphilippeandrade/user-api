@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ecommerce.marcel.philippe.dto.UsuarioDTO;
+import br.com.ecommerce.marcel.philippe.exception.UsuarioNotFoundException;
 import br.com.ecommerce.marcel.philippe.modelo.Usuario;
 import br.com.ecommerce.marcel.philippe.repository.UsuarioRepository;
 
@@ -50,7 +51,7 @@ public class UsuarioService {
 		if (usuario != null) {
 			return UsuarioDTO.convert(usuario);
 		}
-		return null;
+		throw new UsuarioNotFoundException();
 	}
 
 	public List<UsuarioDTO> queryByName(String name) {

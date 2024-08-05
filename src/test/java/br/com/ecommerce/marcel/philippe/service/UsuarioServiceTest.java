@@ -2,9 +2,11 @@ package br.com.ecommerce.marcel.philippe.service;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.ecommerce.marcel.philippe.dto.UsuarioDTO;
+import br.com.ecommerce.marcel.philippe.exception.UsuarioNotFoundException;
 import br.com.ecommerce.marcel.philippe.modelo.Usuario;
 import br.com.ecommerce.marcel.philippe.repository.UsuarioRepository;
 
@@ -124,9 +127,14 @@ public class UsuarioServiceTest {
 	}
 	
 	@Test
-	public void naoDeveRetornarUmUsuarioPeloCPF() {
-		UsuarioDTO usuario = usuarioService.findByCpf("876.223.320-38");
-		assertNull(usuario);
+	public void deveRetornarUmaExecaoQuandoNaoExitirUmUsuario() {
+
+		String cpf = "876.223.320-38";
+		when(usuarioRepository.findByCpf(cpf)).thenReturn(null);
+
+		assertThrows(UsuarioNotFoundException.class, () -> {
+			usuarioService.findByCpf(cpf);
+		});
 	}
 	
 	@Test
