@@ -32,7 +32,7 @@ public class UsuarioControllerAdviceTest {
     public void deveRetornarOErroHandleUsuarioNotFound() {
         when(usuarioNotFoundException.getMessage()).thenReturn("Usuário não encontrado.");
 
-        ErrorDTO errorDTO = usuarioControllerAdvice.handleUsuarioNotFound(usuarioNotFoundException);
+        ErrorDTO errorDTO = usuarioControllerAdvice.handleUserNotFound(usuarioNotFoundException);
 
         assertEquals(HttpStatus.NOT_FOUND.value(), errorDTO.getStatus());
         assertEquals("Usuário não encontrado.", errorDTO.getMessage());
