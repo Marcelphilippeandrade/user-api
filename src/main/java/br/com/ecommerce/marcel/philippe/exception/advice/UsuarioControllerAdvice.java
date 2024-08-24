@@ -18,7 +18,7 @@ public class UsuarioControllerAdvice {
 	@ResponseBody
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler(UsuarioNotFoundException.class)
-	public ErrorDTO handleUserNotFound(UsuarioNotFoundException usuarioNotFoundException) {
+	public ErrorDTO handleUsuarioNotFound(UsuarioNotFoundException usuarioNotFoundException) {
 		ErrorDTO errorDTO = new ErrorDTO();
 		errorDTO.setStatus(HttpStatus.NOT_FOUND.value());
 		errorDTO.setMessage("Usuário não encontrado.");
