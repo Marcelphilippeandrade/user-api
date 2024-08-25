@@ -46,6 +46,7 @@ class UsuarioControllerTest {
 
 	private static final String URL_BASE = "/user";
 	private static final String CPF = "066.189.386-35";
+	private static final String KEY = "0d769a46-3919-4476-bc6d-f812da60144f";
 	private static final String EMAIL = "marcelpaa@hotmail.com";
 	private static final String NOME = "Marcel Philippe";
 	private static final Long USUARIO_ID = 1L;
@@ -110,10 +111,11 @@ class UsuarioControllerTest {
 	@Test
 	public void deveRetornarUmUsuarioPeloCpf() throws Exception {
 		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(usuarioDto);
-		BDDMockito.given(this.usuarioService.findByCpf(CPF)).willReturn(usuarioDto);
+		BDDMockito.given(this.usuarioService.findByCpf(CPF, KEY)).willReturn(usuarioDto);
 		
 		mvc.perform(MockMvcRequestBuilders.get(URL_BASE + "/cpf/" + CPF)
-				.accept(MediaType.APPLICATION_JSON))
+				.accept(MediaType.APPLICATION_JSON)
+				.param("key", KEY))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString(String.valueOf(USUARIO_ID))))
 				.andExpect(content().string(containsString(CPF)))

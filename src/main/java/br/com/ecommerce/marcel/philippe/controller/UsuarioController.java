@@ -39,8 +39,8 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/user/cpf/{cpf}")
-	UsuarioDTO getFindByCpf(@PathVariable String cpf) {
-		return usuarioService.findByCpf(cpf);
+	UsuarioDTO getFindByCpf(@RequestParam(name="key", required=true) String key, @PathVariable String cpf) {
+		return usuarioService.findByCpf(cpf, key);
 	}
 
 	@DeleteMapping("/user/{id}")
