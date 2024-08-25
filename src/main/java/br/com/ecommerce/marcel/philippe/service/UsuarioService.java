@@ -2,6 +2,7 @@ package br.com.ecommerce.marcel.philippe.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class UsuarioService {
 	}
 
 	public UsuarioDTO save(UsuarioDTO usuarioDTO) {
+		usuarioDTO.setKey(UUID.randomUUID().toString());
+		
 		Usuario usuario = usuarioRepository.save(Usuario.convert(usuarioDTO));
 		return UsuarioDTO.convert(usuario);
 	}
@@ -46,8 +49,8 @@ public class UsuarioService {
 		return null;
 	}
 
-	public UsuarioDTO findByCpf(String cpf) {
-		Usuario usuario = usuarioRepository.findByCpf(cpf);
+	public UsuarioDTO findByCpf(String cpf, String key) {
+		Usuario usuario = usuarioRepository.findByCpfAndKey(cpf, key);
 		if (usuario != null) {
 			return UsuarioDTO.convert(usuario);
 		}

@@ -26,13 +26,14 @@ public class UsuarioRepositoryTest {
 	private UsuarioRepository mockUsuarioRepository;
 
 	private static final String CPF = "06618938635";
+	private static final String KEY = "0d769a46-3919-4476-bc6d-f812da60144f";
 	private static final String EMAIL = "marcelpaa@hotmail.com";
 	private static final String NOME = "Mar";
 
 	@Test
 	public void deveRetornarUmUsuarioBuscandoPorUmCPF() {
-		when(mockUsuarioRepository.findByCpf(CPF)).thenReturn(obterDadosUsuario().stream().findAny().get());
-		Usuario usuario = usuarioRepository.findByCpf(CPF);
+		when(mockUsuarioRepository.findByCpfAndKey(CPF, KEY)).thenReturn(obterDadosUsuario().stream().findAny().get());
+		Usuario usuario = usuarioRepository.findByCpfAndKey(CPF, KEY);
 		assertEquals(CPF, usuario.getCpf());
 	}
 
@@ -55,6 +56,7 @@ public class UsuarioRepositoryTest {
 		usuario.setEndereco("Rua: Manoel Rubim Nº: 409 Bairro: São Paulo Cep: 31910-030");
 		usuario.setTelefone("31998565849");
 		usuario.setDataCadastro(LocalDate.now());
+		usuario.setKey(KEY);
 
 		Usuario usuario2 = new Usuario();
 		usuario2.setCpf(CPF);
@@ -63,6 +65,7 @@ public class UsuarioRepositoryTest {
 		usuario2.setEndereco("Rua: Manoel Rubim Nº: 409 Bairro: São Paulo Cep: 31910-030");
 		usuario2.setTelefone("31998565849");
 		usuario2.setDataCadastro(LocalDate.now());
+		usuario2.setKey(KEY);
 
 		usuarios.add(usuario);
 		usuarios.add(usuario2);

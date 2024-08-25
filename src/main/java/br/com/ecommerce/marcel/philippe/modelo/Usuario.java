@@ -29,6 +29,7 @@ public class Usuario {
 	private String email;
 	private String telefone;
 	private LocalDate dataCadastro;
+	private String key;
 
 	public static Usuario convert(UsuarioDTO usuarioDTO) {
 		Usuario usuario = new Usuario();
@@ -38,6 +39,7 @@ public class Usuario {
 		usuario.setEmail(usuarioDTO.getEmail());
 		usuario.setTelefone(usuarioDTO.getTelefone());
 		usuario.setDataCadastro(DataUtil.transformarStringEmLocalDate(usuarioDTO.getDataCadastro()));
+		usuario.setKey(usuarioDTO.getKey());
 		return usuario;
 	}
 }

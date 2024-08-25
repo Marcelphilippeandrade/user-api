@@ -40,6 +40,7 @@ public class UsuarioServiceTest {
 	
 	private static final LocalDate DATA_CADASTRO = LocalDate.now();
 	private static final String USUARIO_CPF = "066.189.386-35";
+	private static final String KEY = "0d769a46-3919-4476-bc6d-f812da60144f";
 	private static final String USUARIO_NOME = "Marcel";
 	private static final Long USUARIO_ID = 1L;
 	
@@ -55,12 +56,14 @@ public class UsuarioServiceTest {
 		usuario.setNome(USUARIO_NOME);
 		usuario.setCpf(USUARIO_CPF);
 		usuario.setDataCadastro(DATA_CADASTRO);
+		usuario.setKey(KEY);
 		usuarios.add(usuario);
 		
 		Usuario usuario1 = new Usuario();
 		usuario1.setId(USUARIO_ID);
 		usuario1.setNome(USUARIO_NOME);
 		usuario1.setCpf(USUARIO_CPF);
+		usuario1.setKey(KEY);
 		usuario1.setDataCadastro(DATA_CADASTRO);
 		
 		usuarios.add(usuario1);
@@ -68,7 +71,7 @@ public class UsuarioServiceTest {
 		BDDMockito.given(this.usuarioRepository.save(any())).willReturn(usuario);
 		BDDMockito.given(this.usuarioRepository.saveAll(Mockito.anyList())).willReturn(usuarios);
 		BDDMockito.given(this.usuarioRepository.findById(USUARIO_ID)).willReturn(Optional.ofNullable(usuario));
-		BDDMockito.given(this.usuarioRepository.findByCpf(USUARIO_CPF)).willReturn(usuario);
+		BDDMockito.given(this.usuarioRepository.findByCpfAndKey(USUARIO_CPF, KEY)).willReturn(usuario);
 		
 		BDDMockito.given(this.usuarioRepository.findAll()).willReturn(usuarios);
 		BDDMockito.given(this.usuarioRepository.queryByNomeLike(USUARIO_NOME)).willReturn(usuarios);
@@ -121,7 +124,7 @@ public class UsuarioServiceTest {
 	
 	@Test
 	public void deveRetornarUmUsuarioPeloCpf() {
-		UsuarioDTO usuario = usuarioService.findByCpf(USUARIO_CPF);
+		UsuarioDTO usuario = usuarioService.findByCpf(USUARIO_CPF, KEY);
 		assertNotNull(usuario);
 		assertEquals(USUARIO_CPF, usuario.getCpf());
 	}
@@ -130,10 +133,11 @@ public class UsuarioServiceTest {
 	public void deveRetornarUmaExecaoQuandoNaoExitirUmUsuario() {
 
 		String cpf = "876.223.320-38";
-		when(usuarioRepository.findByCpf(cpf)).thenReturn(null);
+		String key = "0d769a46-3919-4476-bc6d-f812da60155D";
+		when(usuarioRepository.findByCpfAndKey(cpf, key)).thenReturn(null);
 
 		assertThrows(UsuarioNotFoundException.class, () -> {
-			usuarioService.findByCpf(cpf);
+			usuarioService.findByCpf(cpf, key);
 		});
 	}
 	
