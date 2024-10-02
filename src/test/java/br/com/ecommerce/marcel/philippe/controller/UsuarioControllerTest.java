@@ -44,7 +44,7 @@ class UsuarioControllerTest {
 	private List<UsuarioDTO> usuarios;
 	private UsuarioDTO usuarioDto;
 
-	private static final String URL_BASE = "/user";
+	private static final String URL_BASE = "/usuario";
 	private static final String CPF = "066.189.386-35";
 	private static final String KEY = "0d769a46-3919-4476-bc6d-f812da60144f";
 	private static final String EMAIL = "marcelpaa@hotmail.com";
