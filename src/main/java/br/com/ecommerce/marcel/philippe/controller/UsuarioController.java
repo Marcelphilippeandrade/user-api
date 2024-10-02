@@ -22,33 +22,33 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 
-	@GetMapping("/user")
+	@GetMapping("/usuario")
 	public List<UsuarioDTO> getUsuarios() {
 		List<UsuarioDTO> usuarios = usuarioService.getAll();
 		return usuarios;
 	}
 
-	@GetMapping("/user/{id}")
+	@GetMapping("/usuario/{id}")
 	UsuarioDTO getUsuarioFindById(@PathVariable Long id) {
 		return usuarioService.findById(id);
 	}
 
-	@PostMapping("/user")
+	@PostMapping("/usuario")
 	UsuarioDTO novoUsuario(@RequestBody UsuarioDTO usuarioDTO) {
 		return usuarioService.save(usuarioDTO);
 	}
 
-	@GetMapping("/user/cpf/{cpf}")
+	@GetMapping("/usuario/cpf/{cpf}")
 	UsuarioDTO getFindByCpf(@RequestParam(name="key", required=true) String key, @PathVariable String cpf) {
 		return usuarioService.findByCpf(cpf, key);
 	}
 
-	@DeleteMapping("/user/{id}")
+	@DeleteMapping("/usuario/{id}")
 	UsuarioDTO delete(@PathVariable Long id) {
 		return usuarioService.delete(id);
 	}
 
-	@GetMapping("/user/search")
+	@GetMapping("/usuario/search")
 	public List<UsuarioDTO> queryByName(@RequestParam(name = "nome", required = true) String nome) {
 		return usuarioService.queryByName(nome);
 	}
