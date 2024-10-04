@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import br.com.ecommerce.marcel.philippe.exception.InvalidDateFormatException;
+
 public class DataUtil {
-	
+
 	/**
 	 * Transforma uma data representada pelo tipo String para o Tipo LocalDate
 	 * 
@@ -19,7 +21,7 @@ public class DataUtil {
 		try {
 			dataFormatada = LocalDate.parse(data, formatter);
 		} catch (DateTimeParseException e) {
-
+			throw new InvalidDateFormatException();
 		}
 
 		return dataFormatada;
