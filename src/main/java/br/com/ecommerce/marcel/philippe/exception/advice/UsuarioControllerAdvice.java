@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.ecommerce.marcel.philippe.dto.ErrorDTO;
+import br.com.ecommerce.marcel.philippe.exception.InvalidDateFormatException;
 import br.com.ecommerce.marcel.philippe.exception.UsuarioNotFoundException;
 
 import java.util.Date;
@@ -22,6 +23,28 @@ public class UsuarioControllerAdvice {
 		ErrorDTO errorDTO = new ErrorDTO();
 		errorDTO.setStatus(HttpStatus.NOT_FOUND.value());
 		errorDTO.setMessage("Usuário não encontrado.");
+		errorDTO.setTimestamp(new Date());
+		return errorDTO;
+	}
+	
+	@ResponseBody
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(InvalidDateFormatException.class)
+	public  ErrorDTO handleInvalidDateFormatException(InvalidDateFormatException invalidDateFormatException) {
+		ErrorDTO errorDTO = new ErrorDTO();
+		errorDTO.setStatus(HttpStatus.BAD_REQUEST.value());
+		errorDTO.setMessage("Formato de data inválido, formato válido: dd-MM-yyyy");
+		errorDTO.setTimestamp(new Date());
+		return errorDTO;
+	}
+	
+	@ResponseBody
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(Exception.class)
+	public ErrorDTO handleGeneralException(Exception exception) {
+		ErrorDTO errorDTO = new ErrorDTO();
+		errorDTO.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		errorDTO.setMessage("Erro inesperado!");
 		errorDTO.setTimestamp(new Date());
 		return errorDTO;
 	}
