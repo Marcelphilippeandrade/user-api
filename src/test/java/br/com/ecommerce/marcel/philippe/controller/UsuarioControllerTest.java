@@ -2,6 +2,7 @@ package br.com.ecommerce.marcel.philippe.controller;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -33,8 +34,6 @@ import br.com.ecommerce.marcel.philippe.service.UsuarioService;
 @AutoConfigureMockMvc()
 class UsuarioControllerTest {
 
-	private static final String REQUEST_PARAM_NOME = "nome=Mar";
-
 	@Autowired
 	private MockMvc mvc;
 
@@ -51,6 +50,10 @@ class UsuarioControllerTest {
 	private static final String NOME = "Marcel Philippe";
 	private static final Long USUARIO_ID = 1L;
 	private static final String DATA_CADASTRO = "29-03-2024";
+	
+	private static final String TELEFONE_USUÁRIO = "Telefone do usuário.";
+	private static final String ENDEREÇO_USUÁRIO = "Endereço do usuário.";
+	private static final String REQUEST_PARAM_NOME = "nome=Mar";
 	
 	@BeforeEach
 	public void setUp() {
@@ -93,19 +96,36 @@ class UsuarioControllerTest {
 	@Test
 	public void deveSalvarUmUsuario() throws Exception {
 		Usuario usuario = Usuario.convert(usuarioDto);
-		usuario.setId(USUARIO_ID);
+	    usuario.setId(USUARIO_ID);
+	    
+	    BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class)))
+	              .willReturn(UsuarioDTO.convert(usuario));
+	    
+	    mvc.perform(MockMvcRequestBuilders.post(URL_BASE)
+	            .content(this.obterJsonRequisicaoPost())
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .accept(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isOk())
+	            .andExpect(jsonPath("$.statusCode").value(200))
+	            .andExpect(jsonPath("$.data.cpf").value(CPF))
+	            .andExpect(jsonPath("$.data.email").value(EMAIL))
+	            .andExpect(jsonPath("$.data.nome").value(NOME));
+	}
+	
+	@Test
+	public void deveRetornarErrosDeValidacaoQuandoUsuarioInvalido() throws Exception {
+		UsuarioDTO usuarioDtoInvalido = new UsuarioDTO();
 		
-		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(UsuarioDTO.convert(usuario));
+		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(usuarioDtoInvalido);
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL_BASE)
-				.content(this.obterJsonRequisicaoPost())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(content().string(containsString(String.valueOf(USUARIO_ID))))
-				.andExpect(content().string(containsString(CPF)))
-				.andExpect(content().string(containsString(EMAIL)))
-				.andExpect(content().string(containsString(NOME)));
+	            .content(this.obterJsonRequisicaoPostInvalido())
+	            .contentType(MediaType.APPLICATION_JSON)
+	            .accept(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isBadRequest())
+	            .andExpect(jsonPath("$.statusCode").value(400))
+	            .andExpect(jsonPath("$.data").exists())
+	            .andExpect(jsonPath("$.erros").isNotEmpty());
 	}
 	
 	@Test
@@ -156,12 +176,24 @@ class UsuarioControllerTest {
 		ObjectMapper mapper = new ObjectMapper();
 		return mapper.writeValueAsString(usuarioDtoConvertido);
 	}
+	
+	private String obterJsonRequisicaoPostInvalido() throws JsonProcessingException {
+		UsuarioDTO usuarioInvalido = new UsuarioDTO();
+		usuarioInvalido.setNome("");
+		usuarioInvalido.setCpf("123");
+		usuarioInvalido.setEmail("email_invalido");
+
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(usuarioInvalido);
+	}
 
 	private UsuarioDTO obterDadosDoUsuario() {
 		UsuarioDTO usuario = new UsuarioDTO();
+		usuario.setNome(NOME);
 		usuario.setCpf(CPF);
 		usuario.setEmail(EMAIL);
-		usuario.setNome(NOME);
+		usuario.setEndereco(ENDEREÇO_USUÁRIO);
+		usuario.setTelefone(TELEFONE_USUÁRIO);
 		usuario.setDataCadastro(DATA_CADASTRO);
 		return usuario;
 	}
