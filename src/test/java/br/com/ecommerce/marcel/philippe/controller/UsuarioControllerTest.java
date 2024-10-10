@@ -49,6 +49,7 @@ class UsuarioControllerTest {
 	private static final String EMAIL = "marcelpaa@hotmail.com";
 	private static final String NOME = "Marcel Philippe";
 	private static final Long USUARIO_ID = 1L;
+	private static final long ID_INESISTENtE = 2L;
 	private static final String DATA_CADASTRO = "29-03-2024";
 	
 	private static final String TELEFONE_USUÁRIO = "Telefone do usuário.";
@@ -91,6 +92,20 @@ class UsuarioControllerTest {
 				.andExpect(content().string(containsString(CPF)))
 				.andExpect(content().string(containsString(EMAIL)))
 				.andExpect(content().string(containsString(NOME)));
+	}
+	
+	@Test 
+	public void naoDeveRetornarUmUsuarioPeloId() throws Exception {
+		Usuario usuario = Usuario.convert(usuarioDto);
+		
+		usuario.setId(ID_INESISTENtE);
+		
+		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(UsuarioDTO.convert(usuario));
+		BDDMockito.given(this.usuarioService.findById(ID_INESISTENtE)).willReturn(UsuarioDTO.convert(usuario));
+		
+		mvc.perform(MockMvcRequestBuilders.get(URL_BASE + "/" + USUARIO_ID)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test
@@ -151,6 +166,16 @@ class UsuarioControllerTest {
 		mvc.perform(MockMvcRequestBuilders.delete(URL_BASE + "/" + USUARIO_ID)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void nãoDeveDeletarUmUsuarioPeloId() throws Exception {
+		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(usuarioDto);
+		BDDMockito.given(this.usuarioService.delete(ID_INESISTENtE)).willReturn(null);
+		
+		mvc.perform(MockMvcRequestBuilders.delete(URL_BASE + "/" + USUARIO_ID)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isBadRequest());
 	}
 	
 	@Test

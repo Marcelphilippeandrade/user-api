@@ -27,14 +27,31 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 
 	@GetMapping("/usuario")
-	public List<UsuarioDTO> getUsuarios() {
-		List<UsuarioDTO> usuarios = usuarioService.getAll();
-		return usuarios;
+	public ResponseEntity<Response<List<UsuarioDTO>>> getUsuarios() {
+		Response<List<UsuarioDTO>> response = new Response<>();
+	    List<UsuarioDTO> usuarios = usuarioService.getAll();
+
+	    response.setStatusCode(200);
+	    response.setData(usuarios);
+	    
+	    return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/usuario/{id}")
-	public UsuarioDTO getUsuarioFindById(@PathVariable Long id) {
-		return usuarioService.findById(id);
+	public ResponseEntity<Response<UsuarioDTO>> getUsuarioFindById(@PathVariable Long id) {
+		Response<UsuarioDTO> response = new Response<UsuarioDTO>();
+		
+		UsuarioDTO usuario = usuarioService.findById(id);
+		
+		if(usuario == null) {
+			response.setStatusCode(400);
+			response.getErros().add("Usuário não localizado para o ID: " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		response.setStatusCode(200);
+		response.setData(usuario);
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("/usuario")
@@ -55,17 +72,41 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/usuario/cpf/{cpf}")
-	public UsuarioDTO getFindByCpf(@RequestParam(name="key", required=true) String key, @PathVariable String cpf) {
-		return usuarioService.findByCpf(cpf, key);
+	public ResponseEntity<Response<UsuarioDTO>> getFindByCpf(@RequestParam(name="key", required=true) String key, @PathVariable String cpf) {
+		Response<UsuarioDTO> response = new Response<UsuarioDTO>();
+		
+		UsuarioDTO usuario = usuarioService.findByCpf(cpf, key);
+		
+		response.setStatusCode(200);
+		response.setData(usuario);
+		return ResponseEntity.ok(response);
 	}
 
 	@DeleteMapping("/usuario/{id}")
-	public UsuarioDTO delete(@PathVariable Long id) {
-		return usuarioService.delete(id);
+	public ResponseEntity<Response<UsuarioDTO>> delete(@PathVariable Long id) {
+		Response<UsuarioDTO> response = new Response<UsuarioDTO>();
+		UsuarioDTO usuario = usuarioService.delete(id);
+		
+		if(usuario == null) {
+			response.setStatusCode(400);
+			response.getErros().add("Erro ao excluir usuário. ID não localizado, ID: " + id);
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		response.setStatusCode(200);
+		response.setData(usuario);
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/usuario/search")
-	public List<UsuarioDTO> queryByName(@RequestParam(name = "nome", required = true) String nome) {
-		return usuarioService.queryByName(nome);
+	public ResponseEntity<Response<List<UsuarioDTO>>> queryByName(@RequestParam(name = "nome", required = true) String nome) {
+		Response<List<UsuarioDTO>> response = new Response<>();
+		
+		List<UsuarioDTO> usuarios = usuarioService.queryByName(nome);
+		
+		response.setStatusCode(200);
+	    response.setData(usuarios);
+		
+		return ResponseEntity.ok(response);
 	}
 }
