@@ -87,6 +87,8 @@
 						<exclude>br.com.ecommerce.marcel.philippe</exclude>
 						<exclude>br.com.ecommerce.marcel.philippe.modelo</exclude>
 						<exclude>br.com.ecommerce.marcel.philippe.dto</exclude>
+						<exclude>br.com.ecommerce.marcel.philippe.exception</exclude>
+						<exclude>br.com.ecommerce.marcel.philippe.response</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
