@@ -83,7 +83,7 @@ public class UsuarioController {
 		}
 
 		UsuarioDTO usuario = this.usuarioService.save(usuarioDTO);
-		response.setStatusCode(200);
+		response.setStatusCode(201);
 		response.setData(usuario);
 		return ResponseEntity.ok(response);
 	}
