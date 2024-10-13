@@ -19,14 +19,14 @@ public class SwaggerTest {
 
 	@Test
 	public void deveRetornarPaginaUiDoSwagger() throws Exception {
-		mockMvc.perform(get("/swagger-ui/index.html"))
+		mockMvc.perform(get("/usuarios/swagger-ui/index.html"))
 			.andExpect(status()
 					.isOk());
 	}
 	
 	@Test
 	public void deveRetornarOpenApiDocs() throws Exception {
-		mockMvc.perform(get("/v3/api-docs"))
+		mockMvc.perform(get("/usuarios/v3/api-docs"))
 			.andExpect(status()
 					.isOk())
             .andExpect(jsonPath("$.paths['/usuario']").exists())
@@ -39,6 +39,5 @@ public class SwaggerTest {
             .andExpect(jsonPath("$.paths['/usuario/{id}'].delete.responses['200'].description").exists())
             .andExpect(jsonPath("$.paths['/usuario/{id}'].delete.responses['404'].description").exists())
             .andExpect(jsonPath("$.paths['/usuario/search'].get.responses['200'].description").exists());
-			
 	}
 }
