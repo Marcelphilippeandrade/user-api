@@ -3,6 +3,7 @@ package br.com.ecommerce.marcel.philippe.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ecommerce.marcel.philippe.dto.UsuarioDTO;
@@ -35,6 +37,7 @@ public class UsuarioController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso"), })
 	@GetMapping("/usuario")
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Response<List<UsuarioDTO>>> getUsuarios() {
 		Response<List<UsuarioDTO>> response = new Response<>();
 		List<UsuarioDTO> usuarios = usuarioService.getAll();
@@ -51,6 +54,7 @@ public class UsuarioController {
 	        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
 	    })
 	@GetMapping("/usuario/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Response<UsuarioDTO>> getUsuarioFindById(@PathVariable Long id) {
 		Response<UsuarioDTO> response = new Response<UsuarioDTO>();
 
@@ -71,6 +75,7 @@ public class UsuarioController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Erro nos dados do usuário") })
 	@PostMapping("/usuario")
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Response<UsuarioDTO>> novoUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO,
 			BindingResult result) {
 		Response<UsuarioDTO> response = new Response<UsuarioDTO>();
@@ -85,7 +90,7 @@ public class UsuarioController {
 		UsuarioDTO usuario = this.usuarioService.save(usuarioDTO);
 		response.setStatusCode(201);
 		response.setData(usuario);
-		return ResponseEntity.ok(response);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	
@@ -94,6 +99,7 @@ public class UsuarioController {
         @ApiResponse(responseCode = "200", description = "Usuário retornado com sucesso"),
     })
 	@GetMapping("/usuario/cpf/{cpf}")
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Response<UsuarioDTO>> getFindByCpf(@RequestParam(name = "key", required = true) String key,
 			@PathVariable String cpf) {
 		Response<UsuarioDTO> response = new Response<UsuarioDTO>();
@@ -111,6 +117,7 @@ public class UsuarioController {
         @ApiResponse(responseCode = "404", description = "Erro ao deletar usuário")
     })
 	@DeleteMapping("/usuario/{id}")
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Response<UsuarioDTO>> delete(@PathVariable Long id) {
 		Response<UsuarioDTO> response = new Response<UsuarioDTO>();
 		UsuarioDTO usuario = usuarioService.delete(id);
@@ -131,6 +138,7 @@ public class UsuarioController {
 	        @ApiResponse(responseCode = "200", description = "Usuário retornado com sucesso")
 	    })
 	@GetMapping("/usuario/search")
+	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<Response<List<UsuarioDTO>>> queryByName(
 			@RequestParam(name = "nome", required = true) String nome) {
 		Response<List<UsuarioDTO>> response = new Response<>();

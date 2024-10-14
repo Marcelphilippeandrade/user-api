@@ -120,7 +120,7 @@ class UsuarioControllerTest {
 	            .content(this.obterJsonRequisicaoPost())
 	            .contentType(MediaType.APPLICATION_JSON)
 	            .accept(MediaType.APPLICATION_JSON))
-	            .andExpect(status().isOk())
+	            .andExpect(status().isCreated())
 	            .andExpect(jsonPath("$.statusCode").value(201))
 	            .andExpect(jsonPath("$.data.cpf").value(CPF))
 	            .andExpect(jsonPath("$.data.email").value(EMAIL))
