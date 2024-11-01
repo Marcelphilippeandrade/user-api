@@ -2,6 +2,8 @@ package br.com.ecommerce.marcel.philippe.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,8 @@ import jakarta.validation.Valid;
 @CrossOrigin(origins = "*")
 @Tag(name = "Usuários", description = "Gerenciamento de usuários")
 public class UsuarioController {
+	
+	Logger logger = LoggerFactory.getLogger(UsuarioController.class);
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -44,13 +48,15 @@ public class UsuarioController {
 
 		response.setStatusCode(200);
 		response.setData(usuarios);
+		
+		logger.info("Busca de usuários retornada com sucesso!");
 
 		return ResponseEntity.ok(response);
 	}
 
 	 @Operation(summary = "Retornar usuário pelo ID")
 	    @ApiResponses(value = {
-	        @ApiResponse(responseCode = "200", description = "Usuário retornado com sucesso"),
+	        @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
 	        @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
 	    })
 	@GetMapping("/usuario/{id}")
@@ -63,11 +69,13 @@ public class UsuarioController {
 		if (usuario == null) {
 			response.setStatusCode(404);
 			response.getErros().add("Usuário não localizado para o ID: " + id);
+			logger.error("Usuário não encontrado para o id: {}", id);
 			return ResponseEntity.badRequest().body(response);
 		}
 
 		response.setStatusCode(200);
 		response.setData(usuario);
+		logger.info("Usuário de nome: {}", usuario.getNome() + ", ID: " + id + " encontrado com sucesso!");
 		return ResponseEntity.ok(response);
 	}
 
@@ -84,12 +92,15 @@ public class UsuarioController {
 			result.getAllErrors().forEach(error -> response.getErros().add(error.getDefaultMessage()));
 			response.setStatusCode(400);
 			response.setData(usuarioDTO);
+			logger.error("Não foi possível salvar novo usuário: {}", usuarioDTO.getNome() + ", CPF: " +
+					usuarioDTO.getCpf());
 			return ResponseEntity.badRequest().body(response);
 		}
 
 		UsuarioDTO usuario = this.usuarioService.save(usuarioDTO);
 		response.setStatusCode(201);
 		response.setData(usuario);
+		logger.info("Usuário: {}", usuario.getNome() + ", CPF: " + usuario.getCpf() + " salvo com sucesso!");
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
@@ -108,6 +119,7 @@ public class UsuarioController {
 
 		response.setStatusCode(200);
 		response.setData(usuario);
+		logger.info("Usuário: {}", usuario.getNome() + ", CPF: " + usuario.getCpf() + " encontrado com sucesso!");
 		return ResponseEntity.ok(response);
 	}
 
@@ -125,11 +137,13 @@ public class UsuarioController {
 		if (usuario == null) {
 			response.setStatusCode(404);
 			response.getErros().add("Erro ao excluir usuário. ID não localizado, ID: " + id);
+			logger.error("Não foi possível deletar usuário para o ID: {}", id, ". Usuário não encontrado!");
 			return ResponseEntity.badRequest().body(response);
 		}
 
 		response.setStatusCode(200);
 		response.setData(usuario);
+		logger.error("Usuário ID: {}", id + ", Nome: " + usuario.getNome() + ", CPF: " + usuario.getCpf() + "deletado com sucesso!");
 		return ResponseEntity.ok(response);
 	}
 
@@ -147,7 +161,8 @@ public class UsuarioController {
 
 		response.setStatusCode(200);
 		response.setData(usuarios);
-
+		
+		logger.info("Busca de usuários pelo nome: {}", nome + " retornada com sucesso!");
 		return ResponseEntity.ok(response);
 	}
 }

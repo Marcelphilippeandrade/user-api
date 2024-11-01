@@ -4,9 +4,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import br.com.ecommerce.marcel.philippe.exception.InvalidDateFormatException;
 
 public class DataUtil {
+	
+	static Logger logger = LoggerFactory.getLogger(DataUtil.class);
 
 	/**
 	 * Transforma uma data representada pelo tipo String para o Tipo LocalDate
@@ -20,7 +25,9 @@ public class DataUtil {
 
 		try {
 			dataFormatada = LocalDate.parse(data, formatter);
+			logger.info("Data :{}", data + ", formatada: " + dataFormatada + " com sucesso!");
 		} catch (DateTimeParseException e) {
+			logger.error("Erro ao formatar a data: {}", data);
 			throw new InvalidDateFormatException();
 		}
 
@@ -36,6 +43,7 @@ public class DataUtil {
 	public static String transformarLocalDateEmString(LocalDate data) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		String dataFormatada = formatter.format(data);
+		logger.info("Data: {}", data + ", formatada: " + dataFormatada + " com sucesso!");
 		return dataFormatada;
 	}
 

@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "219bc6a5-9ee6-4ee3-830c-3ebb186102a6",
+		"name": "User-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2086778"
+	},
+	"item": [
+		{
+			"name": "Get Usuarios",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url_base}}/usuario",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Usuario-Id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url_base}}/usuario/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"usuario",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Usuario-CPF",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url_base}}/usuario/cpf/{{cpf}}?key={{key}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"usuario",
+						"cpf",
+						"{{cpf}}"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{key}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Usuario-id",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url_base}}/usuario/{{id}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"usuario",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Novo-Usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Josiane\",\r\n    \"cpf\": \"05634383633\",\r\n    \"endereco\": \"Rua abc\",\r\n    \"email\": \"jorosa303@gmail.com\",\r\n    \"telefone\": \"31998565849\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/usuario",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Usuario-Search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_base}}/usuario/search?nome={{nome}}",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"usuario",
+						"search"
+					],
+					"query": [
+						{
+							"key": "nome",
+							"value": "{{nome}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get API-Docs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_base}}/usuarios/v3/api-docs",
+					"host": [
+						"{{url_base}}"
+					],
+					"path": [
+						"usuarios",
+						"v3",
+						"api-docs"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
