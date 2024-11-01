@@ -32,7 +32,6 @@ public class UsuarioDTO {
 	@NotBlank(message = "Telefone não pode ser vazio.")
 	private String telefone;
 	
-	@NotBlank(message = "Data Cadastro não pode ser vazia.")
 	private String dataCadastro;
 	
 	private String key;
