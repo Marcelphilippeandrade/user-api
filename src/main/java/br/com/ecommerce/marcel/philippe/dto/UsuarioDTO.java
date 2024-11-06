@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import br.com.ecommerce.marcel.philippe.modelo.Usuario;
 import br.com.ecommerce.marcel.philippe.utils.DataUtil;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class UsuarioDTO {
 	private String endereco;
 	
 	@NotBlank(message = "Email não pode ser vazio.")
+	@Email(regexp = "/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/", message = "Email Inválido, favor inserir um Email válido.")
 	private String email;
 	
 	@NotBlank(message = "Telefone não pode ser vazio.")
