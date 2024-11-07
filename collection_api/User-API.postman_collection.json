@@ -8,6 +8,48 @@
 	"item": [
 		{
 			"name": "Get Usuarios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the response schema for the presence of required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;\r",
+							"\r",
+							"    responseData.data.forEach(function(user) {\r",
+							"        pm.expect(user).to.have.property('nome');\r",
+							"        pm.expect(user).to.have.property('cpf');\r",
+							"        pm.expect(user).to.have.property('endereco');\r",
+							"        pm.expect(user).to.have.property('email');\r",
+							"        pm.expect(user).to.have.property('telefone');\r",
+							"        pm.expect(user).to.have.property('dataCadastro');\r",
+							"        pm.expect(user).to.have.property('key');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Email is in a valid format\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData.data).to.be.an('array');\r",
+							"  responseData.data.forEach(function(user) {\r",
+							"    pm.expect(user.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is not valid\");\r",
+							"  });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
@@ -31,6 +73,48 @@
 		},
 		{
 			"name": "Get Usuario-Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"  pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"  });\r",
+							"\r",
+							"pm.test(\"Verify the response schema for the presence of required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.data).to.be.an('object').that.is.not.empty;\r",
+							"\r",
+							"    const user = responseData.data;\r",
+							"    pm.expect(user).to.have.property('nome');\r",
+							"    pm.expect(user).to.have.property('cpf');\r",
+							"    pm.expect(user).to.have.property('endereco');\r",
+							"    pm.expect(user).to.have.property('email');\r",
+							"    pm.expect(user).to.have.property('telefone');\r",
+							"    pm.expect(user).to.have.property('dataCadastro');\r",
+							"    pm.expect(user).to.have.property('key');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Email is in a valid format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData.data).to.be.an('object');\r",
+							"    pm.expect(responseData.data.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is not valid\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
@@ -55,6 +139,44 @@
 		},
 		{
 			"name": "Get Usuario-CPF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the response schema for the presence of required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.data).to.be.an('object').that.is.not.empty;\r",
+							"\r",
+							"    const user = responseData.data;\r",
+							"    pm.expect(user).to.have.property('nome');\r",
+							"    pm.expect(user).to.have.property('cpf');\r",
+							"    pm.expect(user).to.have.property('endereco');\r",
+							"    pm.expect(user).to.have.property('email');\r",
+							"    pm.expect(user).to.have.property('telefone');\r",
+							"    pm.expect(user).to.have.property('dataCadastro');\r",
+							"    pm.expect(user).to.have.property('key');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Email is in a valid format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData.data).to.be.an('object');\r",
+							"    pm.expect(responseData.data.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is not valid\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
@@ -86,6 +208,42 @@
 		},
 		{
 			"name": "Delete Usuario-id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"  pm.test(\"Response time is less than 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"  });\r",
+							"\r",
+							"pm.test(\"Verify the response schema for the presence of required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.data).to.be.an('object').that.is.not.empty;\r",
+							"\r",
+							"    const user = responseData.data;\r",
+							"    pm.expect(user).to.have.property('nome');\r",
+							"    pm.expect(user).to.have.property('cpf');\r",
+							"    pm.expect(user).to.have.property('endereco');\r",
+							"    pm.expect(user).to.have.property('email');\r",
+							"    pm.expect(user).to.have.property('telefone');\r",
+							"    pm.expect(user).to.have.property('dataCadastro');\r",
+							"    pm.expect(user).to.have.property('key');\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -110,6 +268,69 @@
 		},
 		{
 			"name": "Post Novo-Usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Teste para verificar o código de status\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Teste para verificar a estrutura do objeto 'data' e a presença dos campos\r",
+							"pm.test(\"Verify the response schema for the presence of required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.data).to.be.an('object').that.is.not.empty;\r",
+							"    \r",
+							"    const user = responseData.data;\r",
+							"    pm.expect(user).to.have.property('nome');\r",
+							"    pm.expect(user).to.have.property('cpf');\r",
+							"    pm.expect(user).to.have.property('endereco');\r",
+							"    pm.expect(user).to.have.property('email');\r",
+							"    pm.expect(user).to.have.property('telefone');\r",
+							"    pm.expect(user).to.have.property('dataCadastro');\r",
+							"    pm.expect(user).to.have.property('key');\r",
+							"});\r",
+							"\r",
+							"// Teste para verificar o formato do email\r",
+							"pm.test(\"Email is in a valid format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.data.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is not valid\");\r",
+							"});\r",
+							"\r",
+							"// Teste para verificar o formato do CPF (exemplo para CPF brasileiro com 11 dígitos)\r",
+							"pm.test(\"CPF is in a valid format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.data.cpf).to.match(/^\\d{11}$/, \"CPF format is not valid\");\r",
+							"});\r",
+							"\r",
+							"// Teste para verificar o formato do telefone\r",
+							"pm.test(\"Telefone is in a valid format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.data.telefone).to.match(/^\\d{10,11}$/, \"Telefone format is not valid\");\r",
+							"});\r",
+							"\r",
+							"// Teste para verificar o formato da data de cadastro\r",
+							"pm.test(\"DataCadastro is in a valid format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.data.dataCadastro).to.match(/^\\d{2}-\\d{2}-\\d{4}$/, \"DataCadastro format is not valid\");\r",
+							"});\r",
+							"\r",
+							"// Teste para verificar o formato da key (UUID)\r",
+							"pm.test(\"Key is a valid UUID format\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    pm.expect(responseData.data.key).to.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/, \"Key format is not valid\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -121,7 +342,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nome\": \"Josiane\",\r\n    \"cpf\": \"05634383633\",\r\n    \"endereco\": \"Rua abc\",\r\n    \"email\": \"jorosa303@gmail.com\",\r\n    \"telefone\": \"31998565849\"\r\n}",
+					"raw": "{\r\n    \"nome\": \"marcel\",\r\n    \"cpf\": \"06618938635\",\r\n    \"endereco\": \"Rua abc\",\r\n    \"email\": \"marcelpaa@hotmail.com\",\r\n    \"telefone\": \"31998565849\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -142,6 +363,48 @@
 		},
 		{
 			"name": "Get Usuario-Search",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify the response schema for the presence of required fields\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"    \r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.data).to.be.an('array').that.is.not.empty;\r",
+							"\r",
+							"    responseData.data.forEach(function(user) {\r",
+							"        pm.expect(user).to.have.property('nome');\r",
+							"        pm.expect(user).to.have.property('cpf');\r",
+							"        pm.expect(user).to.have.property('endereco');\r",
+							"        pm.expect(user).to.have.property('email');\r",
+							"        pm.expect(user).to.have.property('telefone');\r",
+							"        pm.expect(user).to.have.property('dataCadastro');\r",
+							"        pm.expect(user).to.have.property('key');\r",
+							"    });\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Email is in a valid format\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData.data).to.be.an('array');\r",
+							"  responseData.data.forEach(function(user) {\r",
+							"    pm.expect(user.email).to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email format is not valid\");\r",
+							"  });\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
