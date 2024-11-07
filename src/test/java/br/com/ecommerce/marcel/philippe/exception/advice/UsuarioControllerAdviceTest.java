@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import br.com.ecommerce.marcel.philippe.dto.ErrorDTO;
 import br.com.ecommerce.marcel.philippe.exception.InternalServerError;
 import br.com.ecommerce.marcel.philippe.exception.InvalidDateFormatException;
+import br.com.ecommerce.marcel.philippe.exception.UsuarioJaCadastradoException;
 import br.com.ecommerce.marcel.philippe.exception.UsuarioNotFoundException;
 
 public class UsuarioControllerAdviceTest {
@@ -30,6 +31,9 @@ public class UsuarioControllerAdviceTest {
     
     @Mock
     private InternalServerError internalServerError;
+    
+    @Mock
+    private UsuarioJaCadastradoException usuarioJaCadastradoException;
 
     @BeforeEach
     public void setup() {
@@ -66,6 +70,17 @@ public class UsuarioControllerAdviceTest {
     	
     	assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorDTO.getStatus());
         assertEquals("Erro inesperado!", errorDTO.getMessage());
+        assertEquals(new Date().getClass(), errorDTO.getTimestamp().getClass());
+    }
+    
+    @Test
+    public void deveRetornarOErroHandleUsuarioJaCadastradoException() {
+        when(usuarioJaCadastradoException.getMessage()).thenReturn("Usuário já cadastrado.");
+
+        ErrorDTO errorDTO = usuarioControllerAdvice.handleUsuarioJaCadastradoException(usuarioJaCadastradoException);
+
+        assertEquals(HttpStatus.CONFLICT.value(), errorDTO.getStatus());
+        assertEquals("Usuário já cadastrado.", errorDTO.getMessage());
         assertEquals(new Date().getClass(), errorDTO.getTimestamp().getClass());
     }
 }

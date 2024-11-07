@@ -56,6 +56,15 @@ public class UsuarioService {
 		}
 		throw new UsuarioNotFoundException();
 	}
+	
+	public UsuarioDTO findByCpf(String cpf) {
+		Usuario usuario = usuarioRepository.findByCpf(cpf);
+
+		if (usuario != null) {
+			return UsuarioDTO.convert(usuario);
+		}
+		throw new UsuarioNotFoundException();
+	}
 
 	public List<UsuarioDTO> queryByName(String name) {
 		List<Usuario> usuarios = usuarioRepository.queryByNomeLike(name);

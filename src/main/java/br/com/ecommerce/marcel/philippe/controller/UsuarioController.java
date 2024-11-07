@@ -87,6 +87,8 @@ public class UsuarioController {
 	public ResponseEntity<Response<UsuarioDTO>> novoUsuario(@Valid @RequestBody UsuarioDTO usuarioDTO,
 			BindingResult result) {
 		Response<UsuarioDTO> response = new Response<UsuarioDTO>();
+		
+		UsuarioDTO pesquisaUsuarioCPF = usuarioService.findByCpf(usuarioDTO.getCpf());
 
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(error -> response.getErros().add(error.getDefaultMessage()));
@@ -95,6 +97,14 @@ public class UsuarioController {
 			logger.error("Não foi possível salvar novo usuário: {}", usuarioDTO.getNome() + ", CPF: " +
 					usuarioDTO.getCpf());
 			return ResponseEntity.badRequest().body(response);
+		}
+		
+		if (pesquisaUsuarioCPF != null) {
+			response.getErros().add("Usuário já cadastrado para o CPF: " + usuarioDTO.getCpf());
+			response.setStatusCode(409);
+			response.setData(usuarioDTO);
+			logger.error("Usuário já cadastrado: {}", usuarioDTO.getNome() + ", CPF: " + usuarioDTO.getCpf());
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 		}
 
 		UsuarioDTO usuario = this.usuarioService.save(usuarioDTO);
