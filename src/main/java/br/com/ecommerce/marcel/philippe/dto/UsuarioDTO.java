@@ -28,7 +28,7 @@ public class UsuarioDTO {
 	private String endereco;
 	
 	@NotBlank(message = "Email não pode ser vazio.")
-	@Email(regexp = "/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/", message = "Email Inválido, favor inserir um Email válido.")
+	@Email(regexp = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", message = "Email Inválido, favor inserir um Email válido.")
 	private String email;
 	
 	@NotBlank(message = "Telefone não pode ser vazio.")
