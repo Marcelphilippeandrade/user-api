@@ -144,6 +144,20 @@ class UsuarioControllerTest {
 	}
 	
 	@Test
+	public void naoDeveSalvarUsuarioJaExistente() throws Exception {
+		Usuario usuario = Usuario.convert(usuarioDto);
+		
+		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(UsuarioDTO.convert(usuario));
+		BDDMockito.given(this.usuarioService.findByCpf(CPF)).willReturn(UsuarioDTO.convert(usuario));
+		
+		 mvc.perform(MockMvcRequestBuilders.post(URL_BASE)
+		            .content(this.obterJsonRequisicaoPost())
+		            .contentType(MediaType.APPLICATION_JSON)
+		            .accept(MediaType.APPLICATION_JSON))
+		 			.andExpect(status().isConflict());
+		 }
+	
+	@Test
 	public void deveRetornarUmUsuarioPeloCpf() throws Exception {
 		BDDMockito.given(this.usuarioService.save(Mockito.any(UsuarioDTO.class))).willReturn(usuarioDto);
 		BDDMockito.given(this.usuarioService.findByCpf(CPF, KEY)).willReturn(usuarioDto);
