@@ -150,13 +150,12 @@ public class UsuarioServiceTest {
 	}
 	
 	@Test
-	public void deveRetornarUmaExecaoQuandoNaoEncontraUmUsuarioPeloCpf () {
-		
+	public void deveRetornarNuloQuandoNaoEncontraUmUsuarioPeloCpf() {
+
 		when(usuarioRepository.findByCpf(USUARIO_CPF_INEXISTENTE)).thenReturn(null);
-		
-		assertThrows(UsuarioNotFoundException.class, () -> {
-			usuarioService.findByCpf(USUARIO_CPF_INEXISTENTE);
-		});
+
+		UsuarioDTO usuario = usuarioService.findByCpf(USUARIO_CPF_INEXISTENTE);
+		assertNull(usuario);
 	}
 	
 	@Test
